@@ -1,9 +1,9 @@
 # drinkrecipes
 
 
-# Express Authentication
+# DRINKRECIPES including Express Authentication
 
-Express authentication template using Passport + flash messages + custom middleware
+Includes Sean's template using Passport, flash + custom middleware
 
 ## Getting Started
 
