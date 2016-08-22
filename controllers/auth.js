@@ -4,9 +4,14 @@ var passport = require('../config/ppConfig');
 
 var db = require('../models');
 
+
+
 router.get('/signup', function(req, res) {
   res.render('auth/signup');
 });
+
+
+
 
 router.post('/signup', function(req, res) {
   db.user.findOrCreate({
@@ -31,9 +36,15 @@ router.post('/signup', function(req, res) {
   });
 });
 
+
+
+
 router.get('/login', function(req, res) {
   res.render('auth/login');
 });
+
+
+
 
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
@@ -41,6 +52,8 @@ router.post('/login', passport.authenticate('local', {
   failureFlash: 'Invalid username and/or password',
   successFlash: 'You logged in'
 }));
+
+
 
 router.get('/logout', function(req, res) {
   req.logout();

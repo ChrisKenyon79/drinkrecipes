@@ -3,6 +3,8 @@
 
 //ORIGINAL AUTH CODE
 
+
+//REQUIRES
 var express = require('express');
 var ejsLayouts = require('express-ejs-layouts');
 var bodyParser = require('body-parser');
@@ -46,6 +48,42 @@ app.get('/profile', isLoggedIn, function(req, res) {
 app.use('/auth', require('./controllers/auth'));
 
 //END AUTHENTICATION CODE
+
+
+
+//THIS SUCCESSFULLY GENERATES A RANDOM RECIPE JSON
+
+app.get('/', function(req, res) {
+  //console.log(process.env.SEARCH_TERM);
+  //res.render('index');
+  var qs = {
+    //s: process.env.SEARCH_TERM, 
+    s: 'margarita', 
+    //plot: 'short', 
+    //r: 'json'
+  }
+  request({
+    //url: 'http://omdbapi.com', 
+    url: 'http://www.thecocktaildb.com/api/json/v1/1/random.php',
+    qs: qs
+  }, function(error, response, body) {
+    console.log('into function');
+    var data = JSON.parse(body);
+    res.send(body);
+    //res.send(data.Search);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 
