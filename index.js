@@ -43,7 +43,10 @@ app.get('/', function(req, res) {
 });
 
 app.get('/profile', isLoggedIn, function(req, res) {
-  res.render('profile');
+  //console.log(req.user.name);
+  var currentName = req.user.name;
+  //console.log(currentName);
+  res.render('profile', {userName: currentName});
 });
 
 app.use('/auth', require('./controllers/auth'));
