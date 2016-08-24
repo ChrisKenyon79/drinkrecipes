@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('./config/ppConfig');
 var flash = require('connect-flash');
+var async = ('async');
 var request = require('request');
 var isLoggedIn = require('./middleware/isLoggedIn');
 var app = express();
@@ -101,51 +102,75 @@ app.get('/recipename', function(req, res) {
 
 
 
-// app.get('/ingredient', function(req, res) {
+app.get('/ingredient', function(req, res) {
 
-//   request({
-//     //url: 'http://omdbapi.com', 
-//     url: 'http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' + req.query.ingredient1
-//   }, function(error, response, body) {
+  request({
+    url: 'http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' + req.query.ingredient1
+  }, function(error, response, body) {
 
-//     //get ingredient1 IDs into new array
-//     var data1 = JSON.parse(body);
-//     var drinkIdArray1 = [];
-//     for (var i = 0; i < data1.drinks.length; i++) {
-//       drinkIdArray1.push(data1.drinks[i].idDrink);
-//     }
+    //get ingredient1 IDs into new array
+    var data1 = JSON.parse(body);
+    var drinkIdArray1 = [];
+    for (var i = 0; i < data1.drinks.length; i++) {
+      drinkIdArray1.push(data1.drinks[i].idDrink);
+    }
 
-//   request({
-//     //url: 'http://omdbapi.com', 
-//     url: 'http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' + req.query.ingredient2
-//   }, function(error, response, body) {
+  request({
+    url: 'http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' + req.query.ingredient2
+  }, function(error, response, body) {
 
-//     //get ingredient2 IDs into new array
-//     var data2 = JSON.parse(body);
-//     var drinkIdArray2 = [];
-//     for (var i = 0; i < data2.drinks.length; i++) {
-//       drinkIdArray2.push(data2.drinks[i].idDrink);
-//     }
+    //get ingredient2 IDs into new array
+    var data2 = JSON.parse(body);
+    var drinkIdArray2 = [];
+    for (var i = 0; i < data2.drinks.length; i++) {
+      drinkIdArray2.push(data2.drinks[i].idDrink);
+    }
 
-//     //compare the 2 arrays so far, keep the matches
-//     var combinedIds = containsAll(data1, data2);
+    //compare the 2 arrays so far, keep the matches
+    //uses the function below
+    var combinedIds = containsAll(drinkIdArray1, drinkIdArray2);
   
-//     var combinedDrinkArray = [];
+    //with Ids in array, get full recipe info for each ID
+    var combinedDrinkArray = [];
+    for (var i = 0; i < combinedIds.length; i++) {
+      request({
+        url: 'http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' + combinedIds[i]
+      }, function(error, response, body) {
+        var data3 = JSON.parse(body);
+        var data4 = data3.drinks[0];
 
-//     for (var i = 0; i < combinedIds.length; i++) {
-//       request({
-//         url: 'http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' + combinedIds[i]
-//       }, function(error, response, body) {
-//         var data3 = JSON.parse(body);
-//         combinedDrinkArray = combinedDrinkArray.push(data3);
-//       }
-//       );
-//     }
+        console.log("here is data4");
+        console.log(data4);
+        console.log("end of data4");
+
+        combinedDrinkArray.push(data4);
+
+        console.log("here is combinedDrinkArray in loop");
+        console.log(combinedDrinkArray);
+        console.log("end of combinedDrinkArray in loop");
 
 
-//     res.render("partials/showrecipes", { recipe: combinedDrinkArray.drinks })
-//   });
-// })});
+      }
+      );
+    }
+
+
+    //console.log("here is ending combinedDrinkArray");
+    //console.log(combinedDrinkArray);
+    //console.log("end of ending combinedDrinkArray");
+
+    //res.send("made it to the bottom");
+    //res.send(combinedDrinkArray);
+    res.render("partials/showrecipes", { recipe: combinedDrinkArray.drinks });
+
+
+  });
+})});
+
+
+function ingredient1()
+
+
 
 
 
@@ -186,6 +211,4 @@ function containsAll(array1, array2) {
 var server = app.listen(process.env.PORT || 3000);
 
 module.exports = server;
-
-
 
