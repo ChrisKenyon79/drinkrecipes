@@ -66,11 +66,10 @@ app.use('/auth', require('./controllers/auth'));
 //ADD INGREDIENTS TO recipespotrandom.ejs
 app.get('/random', function(req, res) {
   request({
-    //url: 'http://omdbapi.com', 
+
     url: 'http://www.thecocktaildb.com/api/json/v1/1/random.php',
-    //qs: qs
+
   }, function(error, response, body) {
-    console.log('into function');
     var data = JSON.parse(body);
     //res.send(body);
     //res.send(data.Search);
@@ -86,7 +85,7 @@ app.get('/random', function(req, res) {
 app.get('/recipename', function(req, res) {
 
   request({
-    //url: 'http://omdbapi.com', 
+
     url: 'http://www.thecocktaildb.com/api/json/v1/1/search.php?s=' + req.query.recipename
   }, function(error, response, body) {
     console.log('into function');
@@ -94,14 +93,13 @@ app.get('/recipename', function(req, res) {
     //res.send(body);
     //res.send(data.Search);
     //console.log(body);
-    res.render("partials/showrecipes", { recipe: data.drinks })
+    res.render("partials/showrecipes", { recipe: data.drinks });
   });
 });
 
 
 
-//can this ingredient list be repeated, then take the IDs in 
-//comparison to generate a smaller list ??
+
 
 // app.get('/ingredient', function(req, res) {
 
