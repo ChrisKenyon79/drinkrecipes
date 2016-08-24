@@ -1,6 +1,50 @@
-<h2>Home</h2>
 
+<!--
 <a href="/auth/signup">Signup</a>
 <a href="/auth/login">Login</a>
 <a href="/auth/logout">Logout</a>
 <a href="/profile">Profile</a>
+-->
+
+
+
+
+<div class="col-sm-4">
+  <h4> Search by Ingredients INDEX.EJS</h4>
+
+  <form action="/ingredient" method="GET">
+    <div class="form-group">
+     <label for="ingredient1">INGREDIENT</label>
+     <input id="ingredient1" class="form-control" type="text" name="ingredient1">
+    </div>
+
+    <div class="form-group">
+     <label for="ingredient2">INGREDIENT</label>
+     <input id="ingredient2" class="form-control" type="text" name="ingredient2">
+    </div>
+
+
+    <input class="btn btn-primary" type="submit">
+  </form>
+
+
+
+  <form action="/recipename" method="GET">
+    <div class="form-group">
+     <label for="recipename">RECIPE NAME</label>
+     <input id="recipename" class="form-control" type="text" name="recipename">
+    </div>
+
+    <input class="btn btn-primary" type="submit">
+  </form>
+
+
+  <form action="/random" method="GET">
+    <div class="form-group">
+     <label for="random">RANDOM DRINK</label>
+    </div>
+
+    <input class="btn btn-primary" type="submit">
+  </form>
+
+</div>

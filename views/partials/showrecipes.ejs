@@ -1,0 +1,25 @@
+<h2>
+RECIPES SPOT TEXT PLACEHOLDER
+IN multiplerecipes.ejs
+</h2>
+
+
+<%= recipe.forEach(function(recipe) { %>
+
+  <div class="well">
+    <h3><%= recipe.strDrink %></h3>
+
+    <h5>
+      <ul style="list-style: none">
+        <li><%= recipe.strIngredient1 %></li>
+        <li><%= recipe.strIngredient2 %></li>
+        <li><%= recipe.strIngredient3 %></li>
+        <li><%= recipe.strIngredient4 %></li>
+        <li><%= recipe.strIngredient5 %></li>
+      </ul>
+
+     <%= recipe.strInstructions %>
+    </h5>
+  </div>
+
+<% }); %>

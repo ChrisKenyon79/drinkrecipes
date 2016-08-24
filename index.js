@@ -3,7 +3,6 @@
 
 //ORIGINAL AUTH CODE
 
-
 //REQUIRES
 var express = require('express');
 var ejsLayouts = require('express-ejs-layouts');
@@ -42,6 +41,10 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
+
+
+
+//This gets the profile view
 app.get('/profile', isLoggedIn, function(req, res) {
   //console.log(req.user.name);
   var currentName = req.user.name;
@@ -55,31 +58,96 @@ app.use('/auth', require('./controllers/auth'));
 
 
 
+
+
 //THIS SUCCESSFULLY GENERATES A RANDOM RECIPE JSON
 
-//THIS IS NOW THE FRONT PAGE FIX THIS
+//FIX THE STYLING ON THE RETURN
+//ADD INGREDIENTS TO recipespotrandom.ejs
+app.get('/random', function(req, res) {
+  request({
+    //url: 'http://omdbapi.com', 
+    url: 'http://www.thecocktaildb.com/api/json/v1/1/random.php',
+    //qs: qs
+  }, function(error, response, body) {
+    console.log('into function');
+    var data = JSON.parse(body);
+    //res.send(body);
+    //res.send(data.Search);
+    //console.log(body);
+    res.render("partials/showrecipes", { recipe: data.drinks });
+  });
+});
 
-// app.get('/', function(req, res) {
-//   //console.log(process.env.SEARCH_TERM);
-//   //res.render('index');
-//   var qs = {
-//     //s: process.env.SEARCH_TERM, 
-//     s: 'margarita', 
-//     //plot: 'short', 
-//     //r: 'json'
-//   }
+
+
+//THIS GETS ALL DRINKS WITH THE NAME SEARCHED
+
+app.get('/recipename', function(req, res) {
+
+  request({
+    //url: 'http://omdbapi.com', 
+    url: 'http://www.thecocktaildb.com/api/json/v1/1/search.php?s=' + req.query.recipename
+  }, function(error, response, body) {
+    console.log('into function');
+    var data = JSON.parse(body);
+    //res.send(body);
+    //res.send(data.Search);
+    //console.log(body);
+    res.render("partials/showrecipes", { recipe: data.drinks })
+  });
+});
+
+
+
+//can this ingredient list be repeated, then take the IDs in 
+//comparison to generate a smaller list ??
+
+// app.get('/ingredient', function(req, res) {
+
 //   request({
 //     //url: 'http://omdbapi.com', 
-//     url: 'http://www.thecocktaildb.com/api/json/v1/1/random.php',
-//     qs: qs
+//     url: 'http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' + req.query.ingredient1
 //   }, function(error, response, body) {
-//     console.log('into function');
-//     var data = JSON.parse(body);
-//     res.send(body);
-//     //res.send(data.Search);
-//     console.log(body);
+
+//     //get ingredient1 IDs into new array
+//     var data1 = JSON.parse(body);
+//     var drinkIdArray1 = [];
+//     for (var i = 0; i < data1.drinks.length; i++) {
+//       drinkIdArray1.push(data1.drinks[i].idDrink);
+//     }
+
+//   request({
+//     //url: 'http://omdbapi.com', 
+//     url: 'http://www.thecocktaildb.com/api/json/v1/1/filter.php?i=' + req.query.ingredient2
+//   }, function(error, response, body) {
+
+//     //get ingredient2 IDs into new array
+//     var data2 = JSON.parse(body);
+//     var drinkIdArray2 = [];
+//     for (var i = 0; i < data2.drinks.length; i++) {
+//       drinkIdArray2.push(data2.drinks[i].idDrink);
+//     }
+
+//     //compare the 2 arrays so far, keep the matches
+//     var combinedIds = containsAll(data1, data2);
+  
+//     var combinedDrinkArray = [];
+
+//     for (var i = 0; i < combinedIds.length; i++) {
+//       request({
+//         url: 'http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' + combinedIds[i]
+//       }, function(error, response, body) {
+//         var data3 = JSON.parse(body);
+//         combinedDrinkArray = combinedDrinkArray.push(data3);
+//       }
+//       );
+//     }
+
+
+//     res.render("partials/showrecipes", { recipe: combinedDrinkArray.drinks })
 //   });
-// });
+// })});
 
 
 
@@ -87,11 +155,32 @@ app.use('/auth', require('./controllers/auth'));
 
 
 
-
-
-
-
-
+function containsAll(array1, array2) {
+    var output = [];
+    var cntObj = {};
+    var array, item, cnt;
+    // for each array passed as an argument to the function
+    for (var i = 0; i < arguments.length; i++) {
+        array = arguments[i];
+        // for each element in the array
+        for (var j = 0; j < array.length; j++) {
+            item = "-" + array[j];
+            cnt = cntObj[item] || 0;
+            // if cnt is exactly the number of previous arrays, 
+            // then increment by one so we count only one per array
+            if (cnt == i) {
+                cntObj[item] = cnt + 1;
+            }
+        }
+    }
+    // now collect all results that are in all arrays
+    for (item in cntObj) {
+        if (cntObj.hasOwnProperty(item) && cntObj[item] === arguments.length) {
+            output.push(item.substring(1));
+        }
+    }
+    return(output);
+};
 
 
 
