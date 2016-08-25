@@ -23,6 +23,13 @@ IN multiplerecipes.ejs
 
      <%= recipe.strInstructions %>
     </h5>
+
+    <form method="post" action="/profile/favorite">
+      <input type="hidden" value="<%= recipe %>"
+      <input type="submit" value="Favorite This Recipe" class="btn btn-primary">
+    </form>
+
+
   </div>
 
 <% }); %>
