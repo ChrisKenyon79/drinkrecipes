@@ -13,6 +13,7 @@ router.get('/signup', function(req, res) {
 
 
 
+
 router.post('/signup', function(req, res) {
   db.user.findOrCreate({
     where: { email: req.body.email },
@@ -37,15 +38,14 @@ router.post('/signup', function(req, res) {
 });
 
 
-
-
+//basic login route
 router.get('/login', function(req, res) {
   res.render('auth/login');
 });
 
 
 
-
+//authentication post route
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/auth/login',
