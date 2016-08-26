@@ -78,7 +78,8 @@ app.use('/auth', require('./controllers/auth'));
 //this shows current favorited recipes when logged in as a user
 //there's a button on every shown API recipe for this
 app.post('/profile/favorite', isLoggedIn, function(req, res) {
-
+  document.getElementById('passedRecipe').value = recipe;
+  console.log(recipe);
 
 
 });

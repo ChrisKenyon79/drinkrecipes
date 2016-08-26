@@ -25,7 +25,7 @@ IN multiplerecipes.ejs
     </h5>
 
     <form method="post" action="/profile/favorite">
-      <input type="hidden" value="<%= recipe %>"
+      <input type="hidden" name="recipe" id="recipe" value="<%= recipe %>">
       <input type="submit" value="Favorite This Recipe" class="btn btn-primary">
     </form>
 
