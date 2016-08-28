@@ -1,3 +1,6 @@
+
+
+//requires for the password authentication controller
 var express = require('express');
 var router = express.Router();
 var passport = require('../config/ppConfig');
@@ -6,10 +9,10 @@ var db = require('../models');
 
 
 
+//The basic route for a new account signup
 router.get('/signup', function(req, res) {
   res.render('auth/signup');
 });
-
 
 
 
@@ -54,7 +57,7 @@ router.post('/login', passport.authenticate('local', {
 }));
 
 
-
+//log out route
 router.get('/logout', function(req, res) {
   req.logout();
   req.flash('success', 'Logged out');
